@@ -24,7 +24,29 @@ app.get('/', async (req, res) => {
 
 app.post('/', async (req, res) => {
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+        const safetySettings = [
+            {
+                "category": "HARM_CATEGORY_DANGEROUS",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "threshold": "BLOCK_NONE",
+            },
+            {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "threshold": "BLOCK_NONE",
+            },
+        ];
+        const model = genAI.getGenerativeModel({ model: "gemini-pro", safetySettings });
         const prompt = req.body.prompt;
         const result = await model.generateContent(prompt);
         const response = await result.response;
