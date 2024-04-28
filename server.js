@@ -1,7 +1,7 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold  } from '@google/generative-ai';
 
 dotenv.config();
 
@@ -24,45 +24,39 @@ app.get('/', async (req, res) => {
 
 app.post('/', async (req, res) => {
     try {
+
         const safetySettings = [
             {
-                "category": "HARM_CATEGORY_DANGEROUS",
-                "threshold": "BLOCK_NONE",
+                category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold: HarmBlockThreshold.BLOCK_NONE,
             },
             {
-                "category": "HARM_CATEGORY_HARASSMENT",
-                "threshold": "BLOCK_NONE",
+                category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold: HarmBlockThreshold.BLOCK_NONE,
             },
             {
-                "category": "HARM_CATEGORY_HATE_SPEECH",
-                "threshold": "BLOCK_NONE",
+                category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                threshold: HarmBlockThreshold.BLOCK_NONE,
             },
             {
-                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                "threshold": "BLOCK_NONE",
-            },
-            {
-                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                "threshold": "BLOCK_NONE",
+                category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold: HarmBlockThreshold.BLOCK_NONE,
             },
         ];
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-        
+
         const generationConfig = {
-            temperature: 0.7
+            temperature: 0.7,
+            topK: 1,
+            topP: 1,
+            maxOutputTokens: 2048,
         };
+
+        const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig, safetySettings });
+        
         const prompt = req.body.prompt;
 
-        const parts = [
-            {text: prompt},
-        ];
-
-        const result = await model.generateContent(
-            {
-                contents: [{ role: "user", parts }],
-                generationConfig,
-                safetySettings,
-            }
+        const result = await model.generateContent (
+            prompt
         );
         const response = await result.response;
         const text = response.text();
