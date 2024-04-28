@@ -46,9 +46,24 @@ app.post('/', async (req, res) => {
                 "threshold": "BLOCK_NONE",
             },
         ];
-        const model = genAI.getGenerativeModel({ model: "gemini-pro", safetySettings });
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        
+        const generationConfig = {
+            temperature: 0.7
+        };
         const prompt = req.body.prompt;
-        const result = await model.generateContent(prompt);
+
+        const parts = [
+            {text: prompt},
+        ];
+
+        const result = await model.generateContent(
+            {
+                contents: [{ role: "user", parts }],
+                generationConfig,
+                safetySettings,
+            }
+        );
         const response = await result.response;
         const text = response.text();
         console.log(text);
