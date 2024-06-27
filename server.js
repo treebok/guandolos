@@ -79,10 +79,11 @@ app.post('/', async (req, res) => {
                     temperature: 0.7,
                     topK: 1,
                     topP: 1,
-                    maxOutputTokens: 2048,
+                    maxOutputTokens: 8192,
+                    responseMimeType: "application/json",
                 };
         
-                const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig, safetySettings });
+                const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest", generationConfig, safetySettings });
                 
                 const prompt = req.body.prompt;
         
