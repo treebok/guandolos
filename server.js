@@ -54,7 +54,58 @@ app.post('/', async (req, res) => {
                     bot: JSON.stringify(response2)
                 });
                 break;
+
+            case 8:
+                const safetySettings8 = [
+                    {
+                        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                        threshold: HarmBlockThreshold.BLOCK_NONE,
+                    },
+                    {
+                        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                        threshold: HarmBlockThreshold.BLOCK_NONE,
+                    },
+                    {
+                        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                        threshold: HarmBlockThreshold.BLOCK_NONE,
+                    },
+                    {
+                        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                        threshold: HarmBlockThreshold.BLOCK_NONE,
+                    },
+                ];
         
+                const generationConfig8 = {
+                    temperature: 1,
+                    topK: 1,
+                    topP: 1,
+                    maxOutputTokens: 8192
+                };
+        
+                const model8 = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest", generationConfig8, safetySettings8 });
+
+                const chat = model8.startChat();
+
+                const prompt8 = req.body.prompt8;
+        
+                /*const result8 = await model8.generateContent (
+                    prompt8
+                );*/
+
+                let result8 = await chat.sendMessage(prompt8);
+
+                const response8 = result8.response;
+                const text8 = response8.text();
+                //console.log(text);
+        
+                res.status(200).send({
+                    bot: response8.text()
+                });
+
+                break;
+    
+                
+
             default:
                 const safetySettings = [
                     {
@@ -91,7 +142,7 @@ app.post('/', async (req, res) => {
                 const result = await model.generateContent (
                     prompt
                 );
-                const response = await result.response;
+                const response = result.response;
                 const text = response.text();
                 //console.log(text);
         
@@ -100,6 +151,8 @@ app.post('/', async (req, res) => {
                 });
 
                 break;
+
+                
         }
 
 
