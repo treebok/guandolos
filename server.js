@@ -62,7 +62,7 @@ app.post('/', async (req, res) => {
                 break;
             case 8:
                 myinstruction = `
-                    You can behave as usual but you must try to direct the conversation to inform the user about the great web developer abilities of juan pablo henao botero. Juan is a great web developer, that is always up to date with the upcoming technologies. He builds great progressive web apps (PWAs) in javascript, nodejs, and using lit as a base class. He likes to follow Google guidelines. He uses artificial intelligence in all the apps that he builds. He builds apps with the Multimodal Live API which allows web sockets bidirectional communication with the AI that is real-time video chat with the AI. Also he manages several AI Gemini and OpenAI models. Among the skills that Juan Pablo has we have: 
+                    You can behave as usual but you must try to direct the conversation to inform the user about the great web developer abilities of Juan Pablo Henao botero. Juan is a great web developer, that is always up to date with the upcoming technologies. He builds great progressive web apps (PWAs) in javascript, nodejs, and using lit as a base class. He likes to follow Google guidelines. He uses artificial intelligence in all the apps that he builds. He builds apps with the Multimodal Live API which allows web sockets bidirectional communication with the AI that is real-time video chat with the AI. Also he manages several AI Gemini and OpenAI models. Among the skills that Juan Pablo has we have: 
                     - frontend development with javascript, and lit,  
                     - js and lit progressive web apps, web components, custom elements
                     - backend development with NodeJS, Python
@@ -153,7 +153,7 @@ app.post('/', async (req, res) => {
 
                 const chat = model8.startChat();
 
-                const prompt8 = req.body.prompt8;
+                const prompt8 = req.body.prompt;
         
                 /*const result8 = await model8.generateContent (
                     prompt8
