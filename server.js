@@ -146,24 +146,25 @@ app.post('/', async (req, res) => {
                 ];
         
                 const generationConfig8 = {
-                    temperature: 1,
+                    temperature: 0.7,
                     topK: 1,
                     topP: 1,
-                    maxOutputTokens: 8192
+                    maxOutputTokens: 8192,
+                    responseMimeType: "text/plain",
                 };
         
-                const model8 = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest",
+                const model8 = genAI.getGenerativeModel({ model: "gemini-2.0-flash",
                     systemInstruction: myinstruction, generationConfig8, safetySettings8 });
 
-                const chat = model8.startChat();
+                const chat8 = model8.startChat({
+                    generationConfig8,
+                    history: [
+                    ],
+                });
 
                 const prompt8 = req.body.prompt;
         
-                /*const result8 = await model8.generateContent (
-                    prompt8
-                );*/
-
-                let result8 = await chat.sendMessage(prompt8);
+                let result8 = await chat8.sendMessage(prompt8);
 
                 const response8 = result8.response;
                 const text8 = response8.text();
@@ -205,14 +206,18 @@ app.post('/', async (req, res) => {
                     responseMimeType: "application/json",
                 };
         
-                const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest", generationConfig, safetySettings });
-                //const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-thinking-exp-1219", generationConfig, safetySettings });
+                const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash", generationConfig, safetySettings });
+
+                const chat = model.startChat({
+                    generationConfig,
+                    history: [
+                    ],
+                });
 
                 const prompt = req.body.prompt;
         
-                const result = await model.generateContent (
-                    prompt
-                );
+                let result = await chat.sendMessage(prompt);
+
                 const response = result.response;
                 const text = response.text();
                 //console.log(text);
